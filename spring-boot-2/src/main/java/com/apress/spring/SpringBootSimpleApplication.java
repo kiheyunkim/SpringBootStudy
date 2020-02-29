@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 
 
 @SpringBootApplication
-public class SpringBootSimpleApplication implements CommandLineRunner,ApplicationRunner{
+public class SpringBootSimpleApplication /*implements CommandLineRunner,ApplicationRunner*/{
 	private static final Logger log = LoggerFactory.getLogger(SpringBootSimpleApplication.class);
 		
 	public static void main(String[] args) {
@@ -29,19 +29,30 @@ public class SpringBootSimpleApplication implements CommandLineRunner,Applicatio
 	@Autowired
 	String info;
 	
-	@Override
+	/*
+	@Override	//	ApplicationRunner를 이용하는 방법
 	public void run(ApplicationArguments args) throws Exception{
 		log.info("## > Application 구현체 ...");
 		log.info("info 빈에 액세스: "+ info);
 		args.getNonOptionArgs().forEach(file->log.info(file));
 	}
 	
-	@Override
+	@Override	//	CommandLineRunner를 이용하는 방법
 	public void run(String... args) throws Exception{
 		log.info("## > CommandLineRunner 구현체...");
 		log.info("info 빈에 액세스 : " + info);
 		for(String arg : args) {
 			log.info(arg);
 		}
+	}
+	*/
+	@Bean
+	CommandLineRunner myMethod() {
+		return args->{
+			log.info("## > CommandLineRunner 구현체...");
+			log.info("Info 빈에 액세스: " + info);
+			for(String arg:args)
+				log.info(arg);
+		};
 	}
 }
